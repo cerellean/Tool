@@ -25,14 +25,14 @@
     ],
     "rules": [
       {"outbound": "any", "server": "dns_direct"},
-      {"geosite": ["cn"], "server": "dns_direct"},
       {"clash_mode": "Direct", "server": "dns_direct", "disable_cache": true},
       {"clash_mode": "Global", "server": "dns_proxy", "disable_cache": true},
+      {"geosite": ["cn"], "server": "dns_direct"},
       {"rule_set": ["geosite-geolocation-!cn"], "server": "dns_proxy"}
     ],
     "independent_cache": false,
     "reverse_mapping": true,
-    "final": "dns_direct",
+    "final": "dns_proxy",
     "strategy": "ipv4_only"
   },
   
