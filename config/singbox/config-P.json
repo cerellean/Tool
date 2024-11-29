@@ -107,7 +107,7 @@
       {"rule_set": ["geoip-telegram", "geosite-telegram"], "outbound": "📲 Telegram"},
       {"rule_set": "geosite-tiktok", "outbound": "🎵 TikTok"},
       {"rule_set": ["geoip-netflix", "geosite-netflix"], "outbound": "🎥 Netflix"},
-      {"rule_set": ["geoip-apple", "geosite-apple"], "outbound": "🍎 Apple"},
+      {"rule_set": "geosite-apple", "outbound": "🍎 Apple"},
       {"rule_set": "geosite-microsoft", "outbound": "🪟 Microsoft"},
       {"rule_set": "geosite-geolocation-!cn", "outbound": "🚀 节点选择"},
       {"rule_set": ["geoip-cn", "geosite-cn"], "outbound": "🎯 全球直连"}
@@ -127,7 +127,7 @@
       {"tag": "geoip-apple", "type": "remote", "format": "binary", "url": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo-lite/geoip/apple.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-apple", "type": "remote", "format": "binary", "path": "/etc/sing-box/rule/geosite/apple.srs", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/apple.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-microsoft", "type": "remote", "format": "binary", "path": "/etc/sing-box/rule/geosite/microsoft.srs", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/microsoft.srs", "download_detour": "🎯 全球直连"},
-      {"tag": "geosite-geolocation-!cn", "type": "remote", "format": "binary", "url": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "🎯 全球直连"},
+      {"tag": "geosite-geolocation-!cn", "type": "remote", "format": "binary", "path": "/etc/sing-box/rule/geosite/geolocation-!cn.srs", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geoip-cn", "type": "remote", "format": "binary", "path": "/etc/sing-box/rule/geoip/geoip-cn.srs", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-cn", "type": "remote", "format": "binary", "path": "/etc/sing-box/rule/geosite/geosite-cn.srs", "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs", "download_detour": "🎯 全球直连"}
     ],
