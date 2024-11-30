@@ -30,8 +30,6 @@
       {"geosite": ["cn"], "server": "dns_direct"},
       {"rule_set": ["geosite-geolocation-!cn"], "server": "dns_proxy"}
     ],
-    "independent_cache": false,
-    "reverse_mapping": true,
     "final": "dns_proxy",
     "strategy": "ipv4_only"
   },
@@ -41,12 +39,12 @@
       "type": "tun",
       "tag": "tun-in",
       "address": "172.18.0.1/30",
-      "interface_name": "tun0",
       "mtu": 9000,
-      "gso": true,
       "auto_route": true,
-      "auto_redirect": true,
+      "strict_route": true,
       "sniff": true,
+      "sniff_override_destination": true,
+      "endpoint_independent_nat": false,
       "stack": "system"
     }
   ],
