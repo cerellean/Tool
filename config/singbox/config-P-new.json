@@ -76,18 +76,20 @@
     {"tag": "🎯 全球直连", "type": "direct"},
     {"tag": "dns-out", "type": "dns"}
   ],
-  
-  "outbound_providers": [
+
+  "providers": [
     {
       "type": "remote",
-      "tag": "clash",
+      "tag": "provider",
       "path": "/etc/sing-box/clash.yaml",
-      "download_url": "机场订阅",
-      "download_ua": "clash",
-      "enable_healthcheck": true,
-      "healthcheck_url": "https://www.gstatic.com/generate_204",
-      "healthcheck_interval": "300s",
-      "download_detour": "🎯 全球直连"
+      "health_check": {
+        "enabled": true,
+        "url": "https://www.gstatic.com/generate_204",
+        "interval": "300s",
+      },
+      "url": "机场订阅",
+      "download_detour": "🎯 全球直连",
+      "update_interval": "24h"
     }
   ],
   
