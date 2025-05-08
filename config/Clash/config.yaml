@@ -76,17 +76,16 @@ proxy-groups:
 # 策略组
 - {name: 默认, type: select, proxies: [自动选择, 直连, 香港, 台湾, 日本, 新加坡, 美国, 全部节点], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Proxy.png"}
 - {name: Google, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Google_Search.png"}
-- {name: Apple, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Apple.png"}
-- {name: Telegram, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Telegram.png"}
-- {name: Twitter, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Twitter.png"}
-- {name: ehentai, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Panda.png"}
-- {name: 哔哩哔哩, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/bilibili.png"}
-- {name: 哔哩东南亚, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/bilibili.png"}
-- {name: 巴哈姆特, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Bahamut.png"}
 - {name: YouTube, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/YouTube.png"}
-- {name: NETFLIX, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Netflix.png"}
+- {name: Telegram, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Telegram.png"}
+- {name: OpenAI, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Twitter.png"}
+- {name: Twitter, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Twitter.png"}
+- {name: Github, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Netflix.png"}
 - {name: Spotify, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Spotify.png"}
-- {name: 国内, type: select, proxies: [直连, 默认, 香港, 台湾, 日本, 新加坡, 美国, 全部节点, 自动选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/China_Map.png"}
+- {name: 微软服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Panda.png"}
+- {name: 苹果服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Microsoft.png"}
+- {name: 游戏服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Apple.png"}
+- {name: 广告服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Bahamut.png"}
 - {name: 其他, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Final.png"}
 
 # 节点筛选
@@ -104,27 +103,28 @@ rules:
 - GEOIP,lan,直连,no-resolve
 
 # OpenAI
-- RULE-SET,OpenAI_domain,ChatGPT
+- RULE-SET,OpenAI_domain,OpenAI
 
 # 广告
-- RULE-SET,Ads_Block_domain,广告
+- RULE-SET,Ads_Block_domain,广告服务
   
 # 微软
 - RULE-SET,github_domain,Github
-- RULE-SET,Microsoft_domain,Microsoft
+- RULE-SET,Microsoft_domain,微软服务
+
 # 谷歌/油管
 - RULE-SET,youtube_domain,YouTube
 - RULE-SET,google_domain,Google
+
 # 电报
 - RULE-SET,telegram_domain,Telegram
 
 # 社交/媒体
 - RULE-SET,twitter_domain,Twitter
-- RULE-SET,netflix_domain,NETFLIX
 - RULE-SET,spotify_domain,Spotify
 
 # 苹果
-- RULE-SET,Apple_domain,苹果
+- RULE-SET,Apple_domain,苹果服务
   
 # 海外
 - RULE-SET,geolocation-!cn,其他
