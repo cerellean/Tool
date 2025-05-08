@@ -10,7 +10,7 @@ p: &p {type: http, interval: 3600, health-check: {enable: true, url: "https://ww
 proxy-providers:
   provider1:
     <<: *p
-    url: "https://sub-668.flareix.us/api/node/subscription/c14ba802-9c77-48e7-9ae1-6013f670ed2a/clash"
+    url: ""
   provider2:
     <<: *p
     url: ""
