@@ -13,11 +13,14 @@ proxy-providers:
   provider2:
     <<: *p
     url: ""
-
+    
+##### 全局设置配置 #####
 mode: rule
 ipv6: false
 allow-lan: true
 mixed-port: 7890
+
+# ui 配置
 external-controller: 0.0.0.0:9090
 external-ui: /etc/mihomo/metacubexd
 external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
@@ -39,13 +42,15 @@ sniffer:
 
 interface-name: eth0
 
+# TUN 配置
 tun:
   device: utun
   enable: true
   stack: system
   auto-route: true
   auto-detect-interface: false
-  
+
+# DNS 配置  
 dns:
   enable: true
   ipv6: false
@@ -65,7 +70,10 @@ proxies:
 - name: "直连"
   type: direct
   udp: true
+
+# 策略分组配置
 proxy-groups:
+# 策略组
 - {name: 默认, type: select, proxies: [自动选择, 直连, 香港, 台湾, 日本, 新加坡, 美国, 全部节点], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Proxy.png"}
 - {name: Google, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Google_Search.png"}
 - {name: Apple, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Apple.png"}
@@ -80,31 +88,48 @@ proxy-groups:
 - {name: Spotify, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Spotify.png"}
 - {name: 国内, type: select, proxies: [直连, 默认, 香港, 台湾, 日本, 新加坡, 美国, 全部节点, 自动选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/China_Map.png"}
 - {name: 其他, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Final.png"}
-  #分隔,下面是地区分组
+
+# 节点筛选
 - {name: 香港, type: select, include-all: true, filter: "(?i)(?!直连)(港|hk|hongkong|hong kong)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/HK.png"}
 - {name: 台湾, type: select, include-all: true, filter: "(?i)(?!直连)(台|tw|taiwan)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TW.png"}
 - {name: 日本, type: select, include-all: true, filter: "(?i)(?!直连)(日|jp|japan)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/JP.png"}
-- {name: 美国, type: select, include-all: true, filter: "(?i)(?!直连)(美|us|unitedstates|united states)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/US.png"}
+- {name: 美国, type: select, include-all: true, filter: "(?i)(?!直连)(美|us|unitedstates|america)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/US.png"}
 - {name: 新加坡, type: select, include-all: true, filter: "(?i)(?!直连)(新|sg|singapore)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/SG.png"}
 - {name: 自动选择, type: url-test, include-all: true, tolerance: 10, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Auto.png"}
 - {name: 全部节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Global.png"}
 
+# 策略规则配置
 rules:
+# 本地/局域网 IP
 - GEOIP,lan,直连,no-resolve
-- RULE-SET,biliintl_domain,哔哩东南亚
-- RULE-SET,ehentai_domain,ehentai
-- RULE-SET,github_domain,其他
-- RULE-SET,twitter_domain,Twitter
+
+# OpenAI
+- RULE-SET,OpenAI_domain,ChatGPT
+
+# 广告
+- RULE-SET,Ads_Block_domain,广告
+  
+# 微软
+- RULE-SET,github_domain,Github
+- RULE-SET,Microsoft_domain,Microsoft
+# 谷歌/油管
 - RULE-SET,youtube_domain,YouTube
 - RULE-SET,google_domain,Google
+# 电报
 - RULE-SET,telegram_domain,Telegram
+
+# 社交/媒体
+- RULE-SET,twitter_domain,Twitter
 - RULE-SET,netflix_domain,NETFLIX
-- RULE-SET,bilibili_domain,哔哩哔哩
-- RULE-SET,bahamut_domain,巴哈姆特
 - RULE-SET,spotify_domain,Spotify
-- RULE-SET,pixiv_domain,其他
+
+# 苹果
+- RULE-SET,Apple_domain,苹果
+  
+# 海外
 - RULE-SET,geolocation-!cn,其他
 
+# ipcidr
 - RULE-SET,google_ip,Google
 - RULE-SET,netflix_ip,NETFLIX
 - RULE-SET,telegram_ip,Telegram
