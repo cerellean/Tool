@@ -103,14 +103,17 @@ rules:
 - GEOIP,lan,直连,no-resolve
 
 # OpenAI
-- RULE-SET,OpenAI_domain,OpenAI
+- RULE-SET,openai_domain,OpenAI
 
 # 广告
-- RULE-SET,Ads_Block_domain,广告服务
+- RULE-SET,category_ads_domain,广告服务
+
+# 游戏
+- RULE-SET,category_games_domain,游戏服务
   
 # 微软
 - RULE-SET,github_domain,Github
-- RULE-SET,Microsoft_domain,微软服务
+- RULE-SET,microsoft_domain,微软服务
 
 # 谷歌/油管
 - RULE-SET,youtube_domain,YouTube
@@ -124,7 +127,7 @@ rules:
 - RULE-SET,spotify_domain,Spotify
 
 # 苹果
-- RULE-SET,Apple_domain,苹果服务
+- RULE-SET,apple_domain,苹果服务
   
 # 海外
 - RULE-SET,geolocation-!cn,其他
@@ -148,12 +151,12 @@ rule-providers:
   cn_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.list"
-  biliintl_domain:
+  apple_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.list"
-  ehentai_domain:
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.list"
+  microsoft_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ehentai.list"
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.list"
   github_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.list"
@@ -169,21 +172,18 @@ rule-providers:
   telegram_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.list"
-  netflix_domain:
+  openai_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.list"
-  bilibili_domain:
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.list"
+  category_ads_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.list"
-  bahamut_domain:
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads.list"
+  category_games_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.list"
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games.list"
   spotify_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.list"
-  pixiv_domain:
-    <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/pixiv.list"
   geolocation-!cn:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.list"
