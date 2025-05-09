@@ -1,6 +1,6 @@
 ######### 锚点 start #######
 # 策略组相关
-pr: &pr {type: select, proxies: [默认, 香港, 台湾, 日本, 新加坡, 美国, 全部节点, 自动选择, 直连]}
+pr: &pr {type: select, proxies: [节点选择, 香港, 台湾, 日本, 新加坡, 美国, 全部节点, 自动选择, 全球直连]}
 #这里是订阅更新和延迟测试相关的
 p: &p {type: http, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300}}
 ######### 锚点 end #######
@@ -66,23 +66,23 @@ dns:
     - https://dns.alidns.com/dns-query
 
 proxies:
-- name: "直连"
+- name: "全球直连"
   type: direct
   udp: true
 proxy-groups:
-- {name: 默认, type: select, proxies: [自动选择, 直连, 香港, 台湾, 日本, 新加坡, 美国, 全部节点], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png"}
+- {name: 节点选择, type: select, proxies: [自动选择, 全球直连, 香港, 台湾, 日本, 新加坡, 美国, 全部节点], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png"}
 - {name: Google, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png"}
 - {name: YouTube, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png"}
 - {name: OpenAI, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ChatGPT.png"}
 - {name: Telegram, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png"}
 - {name: Twitter, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Twitter.png"}
 - {name: GitHub, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png"}
-- {name: 微软服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png"}
 - {name: Spotify, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Spotify.png"}
-- {name: 游戏服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png"}
-- {name: 苹果服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png"}
-- {name: 广告服务, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AdBlack.png"}
-- {name: 漏网之鱼, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png"}
+- {name: 微软服务, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png"}
+- {name: 游戏服务, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png"}
+- {name: 苹果服务, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png"}
+- {name: 广告服务, type: select, proxies: [全球直连, reject], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AdBlack.png"}
+- {name: 漏网之鱼, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png"}
   #分隔,下面是地区分组
 - {name: 香港, type: select, include-all: true, filter: "(?i)(?!直连)(港|hk|hongkong|hong kong)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/HK.png"}
 - {name: 台湾, type: select, include-all: true, filter: "(?i)(?!直连)(台|tw|taiwan)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/TW.png"}
@@ -93,7 +93,7 @@ proxy-groups:
 - {name: 全部节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png"}
 
 rules:
-- GEOIP,lan,直连,no-resolve
+- GEOIP,lan,全球直连,no-resolve
 - RULE-SET,microsoft_domain,微软服务
 - RULE-SET,apple_domain,苹果服务
 - RULE-SET,openai_domain,OpenAI
