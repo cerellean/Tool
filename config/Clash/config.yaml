@@ -1,6 +1,6 @@
 ######### 锚点 start #######
 # 策略组相关
-pr: &pr {type: select, proxies: [节点选择, 香港, 台湾, 日本, 新加坡, 美国, 全部节点, 自动选择, 全球直连]}
+pr: &pr {type: select, proxies: [🚀 节点选择, 🇭🇰 香港节点, 🇹🇼 台湾节点, 🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 全部节点, ♻️ 自动选择, 🟢 全球直连]}
 #这里是订阅更新和延迟测试相关的
 p: &p {type: http, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300}}
 ######### 锚点 end #######
@@ -23,7 +23,7 @@ mixed-port: 7890
 external-controller: 0.0.0.0:9090
 external-ui: /etc/mihomo/metacubexd
 external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
-secret: '123456'
+secret: ''
 
 profile:
   store-selected: true
@@ -64,55 +64,55 @@ dns:
   nameserver:
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
-
+    
+proxies:
+- name: "🟢 全球直连"
+  type: direct
+  udp: true
 
 proxy-groups:
-- {name: 节点选择, type: select, proxies: [自动选择, 全球直连, 香港, 台湾, 日本, 新加坡, 美国, 全部节点], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png"}
-- {name: Google, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png"}
-- {name: YouTube, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png"}
-- {name: OpenAI, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ChatGPT.png"}
-- {name: Telegram, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png"}
-- {name: Twitter, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Twitter.png"}
-- {name: GitHub, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png"}
-- {name: Spotify, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Spotify.png"}
-- {name: 微软服务, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png"}
-- {name: 游戏服务, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png"}
-- {name: 苹果服务, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple.png"}
-- {name: 广告服务, type: select, proxies: [全球绕过, 全球拦截], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AdBlack.png"}
-- {name: 漏网之鱼, type: select, proxies: [全球直连, 节点选择], icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png"}
+- {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🟢 全球直连, 🇭🇰 香港节点, 🇹🇼 台湾节点, 🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 全部节点]}
+- {name: 🍀 Google, <<: *pr}
+- {name: 📹 YouTube, <<: *pr}
+- {name: 🤖 人工智能, <<: *pr}
+- {name: 📲 Telegram, <<: *pr}
+- {name: 💎 Twitter, <<: *pr}
+- {name: 👨‍💻 GitHub, <<: *pr}
+- {name: 🎼 Spotify, <<: *pr}
+- {name: Ⓜ️ 微软服务, type: select, proxies: [🟢 全球直连, 🚀 节点选择]}
+- {name: 🎮 游戏服务, type: select, proxies: [🟢 全球直连, 🚀 节点选择]}
+- {name: 🍎 苹果服务, type: select, proxies: [🟢 全球直连, 🚀 节点选择]}
+- {name: 🐟 漏网之鱼, type: select, proxies: [🟢 全球直连, 🚀 节点选择]}
 
-- {name: 全球拦截, type: select, proxies: [REJECT], hidden: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Reject.png"}
-- {name: 全球绕过, type: select, proxies: [PASS], hidden: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png"}
-- {name: 全球直连, type: select, proxies: [DIRECT], hidden: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png"}
+#- {name: 🟢 全球直连, type: select, proxies: [DIRECT], hidden: true}
 
   #分隔,下面是地区分组
-- {name: 香港, type: select, include-all: true, filter: "(?i)(?!直连)(港|hk|hongkong|hong kong)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/HK.png"}
-- {name: 台湾, type: select, include-all: true, filter: "(?i)(?!直连)(台|tw|taiwan)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/TW.png"}
-- {name: 日本, type: select, include-all: true, filter: "(?i)(?!直连)(日|jp|japan)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/JP.png"}
-- {name: 美国, type: select, include-all: true, filter: "(?i)(?!直连)(美|us|unitedstates|america)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/US.png"}
-- {name: 新加坡, type: select, include-all: true, filter: "(?i)(?!直连)(新|sg|singapore)", icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SG.png"}
-- {name: 自动选择, type: url-test, include-all: true, tolerance: 10, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png"}
-- {name: 全部节点, type: select, include-all: true, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png"}
+- {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)(?!直连)(港|hk|hongkong|hong kong)"}
+- {name: 🇹🇼 台湾节点, type: select, include-all: true, filter: "(?i)(?!直连)(台|tw|taiwan)"}
+- {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)(?!直连)(日|jp|japan)"}
+- {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)(?!直连)(美|us|unitedstates|america)"}
+- {name: 🇸🇬 狮城节点, type: select, include-all: true, filter: "(?i)(?!直连)(新|sg|singapore)"}
+- {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 10}
+- {name: 🌐 全部节点, type: select, include-all: true}
 
 rules:
-- GEOIP,lan,全球直连,no-resolve
-- RULE-SET,microsoft_domain,微软服务
-- RULE-SET,apple_domain,苹果服务
-- RULE-SET,openai_domain,OpenAI
-- RULE-SET,github_domain,GitHub
-- RULE-SET,twitter_domain,Twitter
-- RULE-SET,youtube_domain,YouTube
-- RULE-SET,google_domain,Google
-- RULE-SET,telegram_domain,Telegram
-- RULE-SET,category-ads-all_domain,广告服务
-- RULE-SET,category-games_domain,游戏服务
-- RULE-SET,spotify_domain,Spotify
-- RULE-SET,geolocation-!cn,漏网之鱼
+- GEOIP,lan,🟢 全球直连,no-resolve
+- RULE-SET,microsoft_domain,Ⓜ️ 微软服务
+- RULE-SET,apple_domain,🍎 苹果服务
+- RULE-SET,ai_domain,🤖 人工智能
+- RULE-SET,github_domain,👨‍💻 GitHub
+- RULE-SET,twitter_domain,💎 Twitter
+- RULE-SET,youtube_domain,📹 YouTube
+- RULE-SET,google_domain,🍀 Google
+- RULE-SET,telegram_domain,📲 Telegram
+- RULE-SET,games_domain,🎮 游戏服务
+- RULE-SET,spotify_domain,🎼 Spotify
+- RULE-SET,geolocation-!cn,🐟 漏网之鱼
 
-- RULE-SET,google_ip,Google
-- RULE-SET,telegram_ip,Telegram
-- RULE-SET,twitter_ip,Twitter
-- MATCH,漏网之鱼
+- RULE-SET,google_ip,🍀 Google
+- RULE-SET,telegram_ip,📲 Telegram
+- RULE-SET,twitter_ip,💎 Twitter
+- MATCH,🐟 漏网之鱼
 
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: text}
@@ -126,10 +126,10 @@ rule-providers:
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.list"
   microsoft_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.list"
-  openai_domain:
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geosite/microsoft.list"
+  ai_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.list"
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/ai.list"
   github_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.list"
@@ -145,18 +145,12 @@ rule-providers:
   telegram_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.list"
-  category-ads-all_domain:
+  games_domain:
     <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.list"
-  category-games_domain:
-    <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games.list"
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/games.list"
   spotify_domain:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.list"
-  pixiv_domain:
-    <<: *domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/pixiv.list"
   geolocation-!cn:
     <<: *domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.list"
