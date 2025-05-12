@@ -49,7 +49,6 @@
     "strict_route": true,
     "sniff": true,
     "sniff_override_destination": true,
-    "endpoint_independent_nat": false,
     "stack": "system"
   }
 ],
@@ -83,7 +82,6 @@
    "rules": 
    [
      {"action": "sniff"},
-     {"protocol": "dns", "action": "hijack-dns"},
      {"clash_mode": "direct", "outbound": "🎯 全球直连"},
      {"clash_mode": "global", "outbound": "GLOBAL"},
      {"domain": ["clash.razord.top", "yacd.metacubex.one", "yacd.haishan.me", "d.metacubex.one"], "outbound": "🎯 全球直连"},
