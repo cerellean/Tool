@@ -49,7 +49,18 @@ rc-update add sshd && \
 rc-service sshd restart
 ```
 
----
+### 4.开启内核转发
+在alpine中编辑/etc/sysctl.conf，添加一行
+```
+net.ipv4.ip_forward = 1
+```
+net.ipv6.conf.all.forwarding = 1
+运行
+```
+sysctl -p
+```
+如果sysctl不会在开机时启动，则需要运行[rc-update add sysctl]。
+
 # 安装sing-box/mihomo
 ## sing-box安装
 配置文件夹路径：/etc/sing-box
@@ -124,4 +135,24 @@ rc-update add mihomo default
 启动命令
 ```
 service mihomo start
+```
+# alpine折腾IPlist
+## 安装BIRD
+```
+apk add bird
+```
+## 添加启动
+```
+rc-update add bird default
+service bird start
+```
+## 更新IPlist
+```
+cd /home
+chmod +x iplist.sh
+赋予权限
+./iplist.sh
+执行程序
+crontab -e
+0 5 * * * /bin/bash /home/iplist.sh
 ```
