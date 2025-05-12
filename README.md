@@ -53,8 +53,8 @@ rc-service sshd restart
 在alpine中编辑/etc/sysctl.conf，添加一行
 ```
 net.ipv4.ip_forward = 1
-```
 net.ipv6.conf.all.forwarding = 1
+```
 运行
 ```
 sysctl -p
