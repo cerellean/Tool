@@ -146,13 +146,90 @@ apk add bird
 rc-update add bird default
 service bird start
 ```
-## 更新IPlist
+## 非本地ip表获取
 ```
 cd /home
+```
+IPlist内容
+
+```
+#!/bin/bash
+
+# 下载 routes4.conf 文件
+echo "下载 routes4.conf 文件..."
+curl -L -o routes4.conf https://github.com/cerellean/nchnroutes-k/releases/download/v1.0.0/routes4.conf
+
+# 下载 routes6.conf 文件
+echo "下载 routes6.conf 文件..."
+curl -L -o routes6.conf https://github.com/cerellean/nchnroutes-k/releases/download/v1.0.0/routes6.conf
+
+# 获取文件大小（单位为 KB）
+filesize_routes4=$(stat -c%s routes4.conf)
+filesize_routes6=$(stat -c%s routes6.conf)
+filesize_routes4_kb=$((filesize_routes4/1024))
+filesize_routes6_kb=$((filesize_routes6/1024))
+
+# 如果两个文件大小都大于 400KB，则将它们复制到 /etc 文件夹下，并执行 birdc configure 命令
+if [ "$filesize_routes4_kb" -gt "400" ] && [ "$filesize_routes6_kb" -gt "400" ]; then
+  echo "复制 routes4.conf 文件到 /etc 文件夹..."
+  cp -f routes4.conf /etc/routes4.conf
+  
+  echo "复制 routes6.conf 文件到 /etc 文件夹..."
+  cp -f routes6.conf /etc/routes6.conf
+  
+  # 循环执行 birdc configure 命令，直到出现 Reconfigured 为止
+  echo "执行 birdc configure 命令..."
+  while true; do
+    if birdc configure | grep -q "Reconfigured"; then
+      echo "BIRD 配置已重新加载！"
+      break
+    fi
+    sleep 1
+  done
+else
+  echo "文件大小不满足要求，未执行复制和 birdc configure 命令。"
+fi
+```
+赋予权限并执行
+```
 chmod +x iplist.sh
-赋予权限
 ./iplist.sh
-执行程序
+```
+定时更新
+```
 crontab -e
 0 5 * * * /bin/bash /home/iplist.sh
+```
+## 路由地址宣告
+修改bird2配置文件为以下内容 ，文件在/etc/bird.conf
+```
+log syslog all;
+
+router id 192.168.1.10;
+
+protocol device {
+        scan time 60;
+}
+
+protocol kernel {
+        ipv4 {
+              import none;
+              export all;
+        };
+}
+
+protocol static {
+        ipv4;
+        include "routes4.conf";
+}
+
+protocol bgp {
+        local as 65531;
+        neighbor 192.168.1.1 as 65530;
+        source address 192.168.1.10;
+        ipv4 {
+                import none;
+                export all;
+        };
+}
 ```
