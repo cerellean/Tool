@@ -50,3 +50,60 @@ rc-service sshd restart
 ```
 
 ---
+# 安装sing-box/mihomo
+## sing-box安装
+配置文件夹路径：/etc/sing-box
+文件存放路径：/usr/local
+
+## mihomo安装
+配置文件夹路径：/etc/mihomo
+文件存放路径：/usr/local
+
+## sing-box openRC启动文件
+cat /etc/init.d/singbox
+```
+#!/sbin/openrc-run
+
+command="/usr/local/bin/sing-box"
+command_args="run -c /etc/sing-box/config.json" #是您的配置文件位置
+description="sing-box service"
+
+depend() {
+  need net
+  use logger
+}
+
+start() {
+  ebegin "Starting sing-box"
+  start-stop-daemon --start --background --exec $command -- $command_args
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping sing-box"
+  start-stop-daemon --stop --exec $command
+  eend $?
+}
+```
+chmod +x /etc/init.d/sing-box
+rc-update add sing-box default
+service sing-box start
+
+## mihomo openRC启动文件
+cat /etc/init.d/mihomo
+```
+#!/sbin/openrc-run
+command="/usr/local/bin/mihomo"
+command_args="-d /etc/mihomo"
+command_background="yes"
+command_user="root"
+respawn="true"
+pidfile="/var/run/mihomo.pid"
+
+depend() {
+    need net
+}
+```
+chmod +x /etc/init.d/mihomo
+rc-update add mihomo default
+service mihomo start
