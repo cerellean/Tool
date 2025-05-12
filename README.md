@@ -53,10 +53,12 @@ rc-service sshd restart
 # 安装sing-box/mihomo
 ## sing-box安装
 配置文件夹路径：/etc/sing-box
+
 文件存放路径：/usr/local
 
 ## mihomo安装
 配置文件夹路径：/etc/mihomo
+
 文件存放路径：/usr/local
 
 ## sing-box openRC启动文件
@@ -86,7 +88,9 @@ stop() {
 }
 ```
 chmod +x /etc/init.d/sing-box
+
 rc-update add sing-box default
+
 service sing-box start
 
 ## mihomo openRC启动文件
@@ -105,5 +109,7 @@ depend() {
 }
 ```
 chmod +x /etc/init.d/mihomo
+
 rc-update add mihomo default
+
 service mihomo start
