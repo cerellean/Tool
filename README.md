@@ -233,3 +233,30 @@ protocol bgp {
         };
 }
 ```
+# ros的设置
+
+
+```
+首先打开routing选项，在table选项卡下，添加名称为bypass的路由表，勾选fib完成后，执行下一步
+
+/ip route
+add distance=1 gateway=pppoe-out1 routing-table=bypass comment=pass
+# 添加一条路由规则，距离为1，网关为pppoe-out1，路由表为bypass，注释为pass
+
+/routing/bgp/connection
+add name=clash local.role=ebgp remote.address=192.168.1.10 .as=65531 routing-table=bypass router-id=192.168.1.1 as=65530 multihop=yes
+# 添加一个BGP连接，名称为clash，本地角色为ebgp，远程地址为192.168.1.10，自治系统号为65531，路由表为bypass，路由器ID为192.168.1.1，自治系统号为65530，启用多跳选项
+
+/ip firewall mangle add action=accept chain=prerouting src-address=192.168.1.10
+# 添加一个防火墙Mangle规则，动作为接受，链为prerouting，源地址为192.168.1.253
+
+/ip firewall address-list add list=proxy address=192.168.1.32
+# 添加一个地址列表，名称为proxy，包含地址192.168.1.32
+# 该地址支持ip段 例如 192.168.1.1-192.168.1.255
+
+
+/ip firewall mangle add action=mark-routing chain=prerouting src-address-list=proxy dst-port=80,443 dst-address-type=!local protocol=tcp new-routing-mark=bypass
+# 添加一个防火墙Mangle规则，动作为标记路由，链为prerouting，源地址列表为proxy，连接类型tcp。目标端口为80和443，目标地址类型不是本地地址，新的路由标记为bypass
+
+重启路由
+```
