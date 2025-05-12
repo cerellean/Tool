@@ -62,7 +62,9 @@ rc-service sshd restart
 文件存放路径：/usr/local/bing
 
 ## sing-box openRC启动文件
+```
 cat /etc/init.d/singbox
+```
 ```
 #!/sbin/openrc-run
 
@@ -87,6 +89,7 @@ stop() {
   eend $?
 }
 ```
+
 赋权&添加启动
 ```
 chmod +x /etc/init.d/sing-box
@@ -99,7 +102,7 @@ service sing-box start
 ## mihomo openRC启动文件
 ```
 cat /etc/init.d/mihomo
-
+```
 ```
 #!/sbin/openrc-run
 command="/usr/local/bin/mihomo"
