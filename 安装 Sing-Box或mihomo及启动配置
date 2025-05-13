@@ -1,0 +1,79 @@
+### 1. 路径规范：
+
+* Sing-Box 配置路径：`/etc/sing-box`
+* Mihomo 配置路径：`/etc/mihomo`
+* 二进制文件存放路径：`/usr/local/bin`
+
+### 2. openRC 启动配置（Sing-Box）：
+
+创建 `/etc/init.d/sing-box`：
+
+```bash
+#!/sbin/openrc-run
+
+command="/usr/local/bin/sing-box"
+command_args="run -c /etc/sing-box/config.json"
+description="sing-box service"
+
+depend() {
+  need net
+  use logger
+}
+
+start() {
+  ebegin "Starting sing-box"
+  start-stop-daemon --start --background --exec $command -- $command_args
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping sing-box"
+  start-stop-daemon --stop --exec $command
+  eend $?
+}
+```
+
+赋权并设置开机启动：
+
+```bash
+chmod +x /etc/init.d/sing-box
+rc-update add sing-box default
+service sing-box start
+```
+
+### 3. openRC 启动配置（Mihomo）：
+
+创建 `/etc/init.d/mihomo`：
+
+```bash
+#!/sbin/openrc-run
+
+# openrc service-script for mihomo
+#
+# place in /etc/init.d/
+# start on boot: "rc-update add mihomo"
+supervisor=supervise-daemon
+name="Mihomo"
+description="Mihomo Kernel by MetaCubeX"
+
+command="/usr/local/bin/mihomo"
+command_args="-d /etc/mihomo"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+command_background=true
+
+depend() {
+    need net
+    after net
+}
+```
+
+赋权并启动：
+
+```bash
+chmod +x /etc/init.d/mihomo
+rc-update add mihomo default
+service mihomo start
+```
+
+---
