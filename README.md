@@ -38,7 +38,21 @@ lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
 
   ```bash
   apk update && apk upgrade
-  apk add curl git wget nano bash
+
+  # 配置源和时区 alpine内运行
+sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+apk add tzdata 
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+echo "Asia/Shanghai" > /etc/timezone
+apk del tzdata
+rm -rf /var/cache/apk/*
+# vim替换为nano
+apk add nano
+apk del  vim && ln -s /usr/bin/nano /usr/bin/vim  && rm -rf /usr/bin/vi && ln -s /usr/bin/nano /usr/bin/vi
+
+
+  
+  apk add curl git wget bash
   ```
 
 * 启用 SSH 登录：
