@@ -1,19 +1,24 @@
-# 个人alpine折腾sing-box/mihomo配置记录
-# 创建lxc容器模板
-## 容器创建（alpine/debian同样设置）
-取消特权容器勾选
-### 容器完善
-创建完成后容器，不要开机，进入对应容器的选项
-勾选一下选项
-- 嵌套
-- nfs
-- smb
-- fuse
-### 容器配置文件
-开启TUN/TAP支持
-进入pve控制台，进入/etc/pve/lxc文件夹，修改对应的配置文件，可以vi /etc/pve/lxc/[ID].conf
-添加以下内容
-```
+根据您提供的配置文档，我已将其内容整理成以下三大部分，并保留了完整的操作细节、命令与脚本说明：
+
+---
+
+## 一、Alpine LXC 容器模板创建与系统初始化
+
+### 1. 创建 LXC 容器（Alpine 或 Debian）：
+
+* 在 Proxmox VE 中创建容器时，**取消特权容器勾选**。
+* 创建完成后，在容器设置中启用：
+
+  * 嵌套
+  * NFS
+  * SMB
+  * FUSE
+
+### 2. 修改容器配置文件（启用 TUN）：
+
+编辑 `/etc/pve/lxc/[ID].conf`，添加以下内容：
+
+```bash
 lxc.apparmor.profile: unconfined
 lxc.cgroup.devices.allow: a
 lxc.cap.drop: 
@@ -21,66 +26,66 @@ lxc.cgroup2.devices.allow: c 10:200 rwm
 lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
 ```
 
-## Alpine 系统操作流程
-### 启动，更换源（alpine）
-```bash
-sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
-```
-### 1.更新系统
+### 3. 初始化 Alpine 系统：
+
+* 更换镜像源：
+
+  ```bash
+  sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+  ```
+
+* 更新系统并安装基础工具：
+
+  ```bash
+  apk update && apk upgrade
+  apk add curl git wget nano bash
+  ```
+
+* 启用 SSH 登录：
+
+  ```bash
+  apk add --no-cache openssh
+  mkdir -p /etc/ssh && ssh-keygen -A
+  sed -i 's/^#\?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+  sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+  rc-update add sshd
+  rc-service sshd restart
+  ```
+
+* 启用内核转发：
+  编辑 `/etc/sysctl.conf` 添加：
+
+  ```
+  net.ipv4.ip_forward = 1
+  net.ipv6.conf.all.forwarding = 1
+  ```
+
+  并运行：
+
+  ```bash
+  sysctl -p
+  rc-update add sysctl
+  ```
+
+---
+
+## 二、安装 Sing-Box / Mihomo 及启动配置
+
+### 1. 路径规范：
+
+* Sing-Box 配置路径：`/etc/sing-box`
+* Mihomo 配置路径：`/etc/mihomo`
+* 二进制文件存放路径：`/usr/local/bin`
+
+### 2. openRC 启动配置（Sing-Box）：
+
+创建 `/etc/init.d/sing-box`：
 
 ```bash
-apk update && apk upgrade
-```
-
-### 2.安装必须插件
-
-```bash
-apk add curl git wget nano bash
-```
-
-### 3.因为 PVE 虚拟机容器，默认是没有开启远程 root 登录，如需开启使用下面命令
-
-```bash
-apk add --no-cache openssh && \
-mkdir -p /etc/ssh && ssh-keygen -A && \
-sed -i 's/^#\?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-rc-update add sshd && \
-rc-service sshd restart
-```
-
-### 4.开启内核转发
-在alpine中编辑/etc/sysctl.conf，添加一行
-```
-net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding = 1
-```
-运行
-```
-sysctl -p
-```
-如果sysctl不会在开机时启动，则需要运行[rc-update add sysctl]。
-
-# 安装sing-box/mihomo
-## sing-box安装
-配置文件夹路径：/etc/sing-box
-
-文件存放路径：/usr/local/bing
-
-## mihomo安装
-配置文件夹路径：/etc/mihomo
-
-文件存放路径：/usr/local/bing
-
-## sing-box openRC启动文件
-```
-cat /etc/init.d/singbox
-```
-```
 #!/sbin/openrc-run
 
 command="/usr/local/bin/sing-box"
-command_args="run -c /etc/sing-box/config.json" #是您的配置文件位置
+command_args="run -c /etc/sing-box/config.json"
 description="sing-box service"
 
 depend() {
@@ -101,20 +106,19 @@ stop() {
 }
 ```
 
-赋权&添加启动
-```
+赋权并设置开机启动：
+
+```bash
 chmod +x /etc/init.d/sing-box
 rc-update add sing-box default
-```
-启动
-```
 service sing-box start
 ```
-## mihomo openRC启动文件
-```
-cat /etc/init.d/mihomo
-```
-```
+
+### 3. openRC 启动配置（Mihomo）：
+
+创建 `/etc/init.d/mihomo`：
+
+```bash
 #!/sbin/openrc-run
 command="/usr/local/bin/mihomo"
 command_args="-d /etc/mihomo"
@@ -127,136 +131,88 @@ depend() {
     need net
 }
 ```
-赋权&添加默认启动
-```
+
+赋权并启动：
+
+```bash
 chmod +x /etc/init.d/mihomo
 rc-update add mihomo default
-```
-启动命令
-```
 service mihomo start
 ```
-# alpine折腾IPlist
-## 安装BIRD
-```
+
+---
+
+## 三、BGP 与 RouterOS 路由配置
+
+### 1. 安装与配置 BIRD 路由器：
+
+```bash
 apk add bird
-```
-## 添加启动
-```
 rc-update add bird default
 service bird start
 ```
-## 非本地ip表获取
-```
-cd /home
-```
-IPlist内容
 
-```
-#!/bin/bash
+创建获取非本地 IP 的脚本 `/home/iplist.sh`（详见原文），设置定时任务：
 
-# 下载 routes4.conf 文件
-echo "下载 routes4.conf 文件..."
-curl -L -o routes4.conf https://github.com/cerellean/nchnroutes-k/releases/download/v1.0.0/routes4.conf
-
-# 下载 routes6.conf 文件
-echo "下载 routes6.conf 文件..."
-curl -L -o routes6.conf https://github.com/cerellean/nchnroutes-k/releases/download/v1.0.0/routes6.conf
-
-# 获取文件大小（单位为 KB）
-filesize_routes4=$(stat -c%s routes4.conf)
-filesize_routes6=$(stat -c%s routes6.conf)
-filesize_routes4_kb=$((filesize_routes4/1024))
-filesize_routes6_kb=$((filesize_routes6/1024))
-
-# 如果两个文件大小都大于 400KB，则将它们复制到 /etc 文件夹下，并执行 birdc configure 命令
-if [ "$filesize_routes4_kb" -gt "400" ] && [ "$filesize_routes6_kb" -gt "400" ]; then
-  echo "复制 routes4.conf 文件到 /etc 文件夹..."
-  cp -f routes4.conf /etc/routes4.conf
-  
-  echo "复制 routes6.conf 文件到 /etc 文件夹..."
-  cp -f routes6.conf /etc/routes6.conf
-  
-  # 循环执行 birdc configure 命令，直到出现 Reconfigured 为止
-  echo "执行 birdc configure 命令..."
-  while true; do
-    if birdc configure | grep -q "Reconfigured"; then
-      echo "BIRD 配置已重新加载！"
-      break
-    fi
-    sleep 1
-  done
-else
-  echo "文件大小不满足要求，未执行复制和 birdc configure 命令。"
-fi
-```
-赋予权限并执行
-```
-chmod +x iplist.sh
-./iplist.sh
-```
-定时更新
-```
+```bash
+chmod +x /home/iplist.sh
 crontab -e
 0 5 * * * /bin/bash /home/iplist.sh
 ```
-## 路由地址宣告
-修改bird2配置文件为以下内容 ，文件在/etc/bird.conf
-```
-log syslog all;
 
+编辑 `/etc/bird.conf` 配置：
+
+```conf
+log syslog all;
 router id 192.168.1.10;
 
-protocol device {
-        scan time 60;
-}
+protocol device { scan time 60; }
 
 protocol kernel {
-        ipv4 {
-              import none;
-              export all;
-        };
+  ipv4 { import none; export all; };
 }
 
 protocol static {
-        ipv4;
-        include "routes4.conf";
+  ipv4;
+  include "routes4.conf";
 }
 
 protocol bgp {
-        local as 65531;
-        neighbor 192.168.1.1 as 65530;
-        source address 192.168.1.10;
-        ipv4 {
-                import none;
-                export all;
-        };
+  local as 65531;
+  neighbor 192.168.1.1 as 65530;
+  source address 192.168.1.10;
+  ipv4 { import none; export all; };
 }
 ```
-# ros的设置
 
+---
 
-```
-首先打开routing选项，在table选项卡下，添加名称为bypass的路由表，勾选fib完成后，执行下一步
+### 2. RouterOS 设置（ROS）：
 
-/ip route
-add distance=1 gateway=pppoe-out1 routing-table=bypass comment=pass
-# 添加一条路由规则，距离为1，网关为pppoe-out1，路由表为bypass，注释为pass
+* 创建路由表 `bypass`，启用 `fib`
 
-/routing/bgp/connection
-add name=clash local.role=ebgp remote.address=192.168.1.10 .as=65531 routing-table=bypass router-id=192.168.1.1 as=65530 multihop=yes
-# 添加一个BGP连接，名称为clash，本地角色为ebgp，远程地址为192.168.1.10，自治系统号为65531，路由表为bypass，路由器ID为192.168.1.1，自治系统号为65530，启用多跳选项
+* 添加默认路由：
 
-/ip firewall mangle add action=accept chain=prerouting src-address=192.168.1.10
-# 添加一个防火墙Mangle规则，动作为接受，链为prerouting，源地址为192.168.1.253
+  ```bash
+  /ip route add distance=1 gateway=pppoe-out1 routing-table=bypass comment=pass
+  ```
 
-/ip firewall address-list add list=proxy address=192.168.1.32
-# 添加一个地址列表，名称为proxy，包含地址192.168.1.32
-# 该地址支持ip段 例如 192.168.1.1-192.168.1.255
+* 配置 BGP：
 
+  ```bash
+  /routing/bgp/connection add name=clash local.role=ebgp remote.address=192.168.1.10 .as=65531 routing-table=bypass router-id=192.168.1.1 as=65530 multihop=yes
+  ```
 
-/ip firewall mangle add action=mark-routing chain=prerouting src-address-list=proxy dst-port=80,443 dst-address-type=!local protocol=tcp new-routing-mark=bypass
-# 添加一个防火墙Mangle规则，动作为标记路由，链为prerouting，源地址列表为proxy，连接类型tcp。目标端口为80和443，目标地址类型不是本地地址，新的路由标记为bypass
+* 防火墙规则：
 
-重启路由
-```
+  ```bash
+  /ip firewall mangle add action=accept chain=prerouting src-address=192.168.1.10
+  /ip firewall address-list add list=proxy address=192.168.1.32
+  /ip firewall mangle add action=mark-routing chain=prerouting src-address-list=proxy dst-port=80,443 dst-address-type=!local protocol=tcp new-routing-mark=bypass
+  ```
+
+* 最后，**重启路由器**使设置生效。
+
+---
+
+如需我将上述内容生成一份 Markdown 文件、PDF、或部署脚本，欢迎继续告诉我。
