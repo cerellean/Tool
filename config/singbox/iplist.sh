@@ -2,11 +2,11 @@
 
 # 下载 routes4.conf 文件
 echo "下载 routes4.conf 文件..."
-curl -L -o routes4.conf https://github.com/cerellean/nchnroutes-k/releases/download/v1.0.0/routes4.conf
+curl -L -o routes4.conf https://github.com/cerellean/nchnroutes/releases/download/v1.0.0/routes4.conf
 
 # 下载 routes6.conf 文件
 echo "下载 routes6.conf 文件..."
-curl -L -o routes6.conf https://github.com/cerellean/nchnroutes-k/releases/download/v1.0.0/routes6.conf
+curl -L -o routes6.conf https://github.com/cerellean/nchnroutes/releases/download/v1.0.0/routes6.conf
 
 # 获取文件大小（单位为 KB）
 filesize_routes4=$(stat -c%s routes4.conf)
