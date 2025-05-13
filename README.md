@@ -1,12 +1,11 @@
 
-
 ---
 
 ## 一、Alpine LXC 容器模板创建与系统初始化
 
 ### 1. 创建 LXC 容器（Alpine 或 Debian）：
 
-* 在 Proxmox VE 中创建容器时，**取消无特权的容器勾选**。
+* 在 Proxmox VE 中创建容器时，**取消特权容器勾选**。
 * 创建完成后，在容器设置中启用：
 
   * 嵌套
@@ -38,22 +37,18 @@ lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
 
   ```bash
   apk update && apk upgrade
-
-  # 配置源和时区 alpine内运行
-sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
-apk add tzdata 
-cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-echo "Asia/Shanghai" > /etc/timezone
-apk del tzdata
-rm -rf /var/cache/apk/*
-# vim替换为nano
-apk add nano
-apk del  vim && ln -s /usr/bin/nano /usr/bin/vim  && rm -rf /usr/bin/vi && ln -s /usr/bin/nano /usr/bin/vi
-
-
-  
-  apk add curl git wget bash
+  apk add curl git wget nano bash
   ```
+
+* 配置时区：
+
+  ```bash
+  apk add tzdata 
+  cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+  echo "Asia/Shanghai" > /etc/timezone
+  apk del tzdata
+  rm -rf /var/cache/apk/*
+  ```  
 
 * 启用 SSH 登录：
 
@@ -228,4 +223,5 @@ protocol bgp {
 * 最后，**重启路由器**使设置生效。
 
 ---
+
 
