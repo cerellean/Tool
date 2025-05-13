@@ -129,15 +129,24 @@ service sing-box start
 
 ```bash
 #!/sbin/openrc-run
+
+# openrc service-script for mihomo
+#
+# place in /etc/init.d/
+# start on boot: "rc-update add mihomo"
+supervisor=supervise-daemon
+name="Mihomo"
+description="Mihomo Kernel by MetaCubeX"
+
 command="/usr/local/bin/mihomo"
 command_args="-d /etc/mihomo"
-command_background="yes"
-command_user="root"
-respawn="true"
-pidfile="/var/run/mihomo.pid"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+command_background=true
 
 depend() {
     need net
+    after net
 }
 ```
 
