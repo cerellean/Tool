@@ -128,10 +128,9 @@ git clone https://github.com/lammersbjorn/homer-theme.git
 
 ```sh
 cp -r homer-theme/assets/* assets/
-cp homer-theme/index.html .
 ```
 
-
+修改/opt/homer/assets下的config文件。
 ---
 
 
