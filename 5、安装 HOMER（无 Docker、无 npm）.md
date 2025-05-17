@@ -103,7 +103,40 @@ vi /opt/homer/assets/config.yml
 
 ---
 
-## 🌐 七、访问你的 HOMER 面板
+## 🧰 七、安装主题
+
+进入 HOMER 安装目录：
+
+```sh
+cd /opt/homer
+```
+
+备份原始文件（推荐）：
+
+```sh
+cp -r assets assets-backup
+cp index.html index.html.bak
+```
+
+克隆主题仓库：
+
+```sh
+git clone https://github.com/lammersbjorn/homer-theme.git
+```
+
+复制主题中的 `assets/` 和 `index.html` 覆盖当前目录下的文件：
+
+```sh
+cp -r homer-theme/assets/* assets/
+cp homer-theme/index.html .
+```
+
+
+---
+
+
+
+## 🌐 八、访问你的 HOMER 面板
 
 打开浏览器，访问容器 IP：
 
