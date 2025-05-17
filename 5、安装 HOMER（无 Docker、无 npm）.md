@@ -1,37 +1,58 @@
-**官方已经打包好的静态网站文件**，直接部署即可，大大简化流程。
+
+
+# ✅ Alpine LXC 容器中部署 HOMER Dashboard（使用预编译版本）
+
+## 🧱 一、前提条件
+
+你已经：
+
+* 在 PVE 中创建了基于 Alpine Linux 的 LXC 容器
+* 容器能正常联网
 
 ---
 
-## ✅ 使用官方预编译文件安装 HOMER（无 Docker、无 npm）
+## ⚙️ 二、安装 nginx 和 unzip 工具
 
-### 📦 步骤一：下载并解压 homer.zip
+登录 LXC 容器执行：
 
-进入你想要部署的位置，例如 `/opt/homer`：
+```sh
+apk update
+apk add nginx unzip curl
+```
+
+---
+
+## 📥 三、下载并解压 HOMER 编译好的发布包
+
+选择部署目录，例如 `/opt/homer`：
 
 ```sh
 mkdir -p /opt/homer
 cd /opt/homer
 
-# 下载最新版本的编译包
+# 下载官方预编译包
 wget https://github.com/bastienwirtz/homer/releases/latest/download/homer.zip
 
 # 解压
 unzip homer.zip
+
+cd homer
+cp assets/config.yml.dist assets/config.yml
 ```
 
-此时 `/opt/homer` 目录下将包含 `index.html` 和 `assets/` 等文件。
+现在目录下应该有 `index.html`, `assets/config.yml` 等文件。
 
 ---
 
-### ⚙️ 步骤二：配置 Nginx 以托管静态文件
+## 🌐 四、配置 nginx
 
-> **⚠️ 注意路径：Alpine Nginx 默认使用 `/etc/nginx/http.d/` 配置虚拟主机**
+Alpine 的 nginx 配置目录为 `/etc/nginx/http.d/`，你需要新建一个配置文件：
 
 ```sh
 vi /etc/nginx/http.d/homer.conf
 ```
 
-写入以下内容：
+内容如下：
 
 ```nginx
 server {
@@ -47,7 +68,7 @@ server {
 }
 ```
 
-### 🧹（可选）删除默认 welcome 页面配置
+### （可选）删除默认欢迎页配置
 
 ```sh
 rm /etc/nginx/http.d/default.conf
@@ -55,7 +76,7 @@ rm /etc/nginx/http.d/default.conf
 
 ---
 
-### 🚀 步骤三：启动 nginx 并开机自启
+## 🚀 五、启动 nginx 并设置开机自启
 
 ```sh
 rc-service nginx start
@@ -64,21 +85,33 @@ rc-update add nginx
 
 ---
 
-### 🌐 步骤四：访问 HOMER
+## 🔧 六、配置 HOMER（自定义你的面板）
 
-打开浏览器，访问容器的 IP 地址（如 `http://192.168.1.xxx/`），你将看到 HOMER 仪表盘页面。
+配置文件位于：
 
----
+```sh
+/opt/homer/assets/config.yml
+```
 
-## 🧩 步骤五：配置 dashboard 内容
-
-编辑配置文件：
+你可以直接编辑它：
 
 ```sh
 vi /opt/homer/assets/config.yml
 ```
 
-修改后，**不需要重新构建**，直接刷新浏览器即可生效（HOMER 会自动读取 `config.yml`）。
+修改后保存并刷新浏览器即可生效，不需要重启服务。
+
+---
+
+## 🌐 七、访问你的 HOMER 面板
+
+打开浏览器，访问容器 IP：
+
+```
+http://<容器IP>
+```
+
+即可看到 HOMER 仪表盘界面。
 
 ---
 
