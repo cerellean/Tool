@@ -11,7 +11,7 @@ service bird start
 ```bash
 chmod +x /home/iplist.sh
 crontab -e
-0 5 * * * /bin/bash /home/iplist.sh
+0 5 * * * /home/iplist.sh
 ```
 
 编辑 `/etc/bird.conf` 配置：
