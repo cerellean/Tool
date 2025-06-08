@@ -1,7 +1,7 @@
 ##手动装alpine 用musl版本
 ```bash
-akp add wget
-cd /opt~
+apk add wget
+cd /opt
 wget https://github.com/alist-org/alist/releases/download/v3.11.0/alist-linux-musl-amd64.tar.gz
 tar -zxvf alist-*.tar.gz && rm alist-*.tar.gz
 chmod +x alist
