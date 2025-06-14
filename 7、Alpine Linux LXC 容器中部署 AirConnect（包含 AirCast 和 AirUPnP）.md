@@ -35,15 +35,16 @@ cd /opt/airconnect
 
 ```sh
 # 替换为最新版链接
-wget https://github.com/philippe44/AirConnect/releases/download/v1.8.3.0/aircast-linux-x86_64-static.tgz
-wget https://github.com/philippe44/AirConnect/releases/download/v1.8.3.0/airupnp-linux-x86_64-static.tgz
+wget https://github.com/philippe44/AirConnect/releases/download/1.8.3/AirConnect-1.8.3.zip
 ```
 
 ### 3. 解压并重命名
 
 ```sh
-tar xzf aircast-linux-x86_64-static.tgz
-tar xzf airupnp-linux-x86_64-static.tgz
+unzip AirConnect-1.8.3.zip
+# 可选：移除原始压缩包
+rm AirConnect-1.8.3.zip
+
 
 mv aircast-linux-x86_64-static aircast-linux-x86_64-static
 mv airupnp-linux-x86_64-static airupnp-linux-x86_64-static
