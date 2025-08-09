@@ -42,17 +42,28 @@
 
 "inbounds": [
   {
+    "tag": "tun-in",
     "type": "tun",
-    "address": "172.19.0.1/30",
+    "address": [
+      "172.19.0.1/30",
+      "fdfe:dcba:9876::1/126"
+    ],
     "mtu": 9000,
     "auto_route": true,
-    "strict_route": true,
+    "auto_redirect": true,
+    "strict_route": false, 
     "sniff": true,
     "sniff_override_destination": true,
     "stack": "system"
+  },
+  {
+    "tag": "mixed-in",
+    "type": "mixed",
+    "listen": "0.0.0.0",
+    "listen_port": 7890
   }
 ],
-
+  
   "outbounds": [
     { "tag": "🚀 节点选择", "type": "selector", "outbounds": ["🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇸🇬 狮城节点", "♻️ 自动选择", "🎯 全球直连"] },
     { "tag": "📹 YouTube", "type": "selector", "outbounds": ["🚀 节点选择", "♻️ 自动选择", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇸🇬 狮城节点", "🇺🇲 美国节点", "🐸 手动切换"] },
@@ -82,6 +93,7 @@
    "rules": 
    [
      {"action": "sniff"},
+     {"type": "logical","mode": "or", "rules": [{"port": 53},{"protocol": "dns"} ],"action": "hijack-dns"},
      {"clash_mode": "direct", "outbound": "🎯 全球直连"},
      {"clash_mode": "global", "outbound": "GLOBAL"},
      {"domain": ["clash.razord.top", "yacd.metacubex.one", "yacd.haishan.me", "d.metacubex.one"], "outbound": "🎯 全球直连"},
