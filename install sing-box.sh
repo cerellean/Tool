@@ -3,16 +3,16 @@ apt update
 apt install git curl vim unzip bird2 -y
 
 echo "开始下载 sing-box"
-wget https://github.com/SagerNet/sing-box/releases/download/v1.11.11/sing-box-1.11.11-linux-amd64.tar.gz
+wget https://github.com/SagerNet/sing-box/releases/download/v1.12.0/sing-box-1.12.0-linux-amd64.tar.gz
 
 echo "sing-box 下载完成"
 
 echo "开始解压"
-tar -zxvf sing-box-1.11.11-linux-amd64.tar.gz
+tar -zxvf sing-box-1.12.0-linux-amd64.tar.gz
 echo "解压完成"
 
 echo "开始重命名"
-cd sing-box-1.11.11-linux-amd64
+cd sing-box-1.12.0-linux-amd64
 echo "重命名完成"
 
 echo "开始添加执行权限"
