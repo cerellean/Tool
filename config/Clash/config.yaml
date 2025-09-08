@@ -99,7 +99,7 @@ rules:
 - GEOIP,lan,🟢 全球直连,no-resolve
 - RULE-SET,microsoft_domain,Ⓜ️ 微软服务
 - RULE-SET,apple_domain,🍎 苹果服务
-- RULE-SET,geosite-openai,🤖 人工智能
+- RULE-SET,ggeosite-openai_domain,🤖 人工智能
 - RULE-SET,github_domain,👨‍💻 GitHub
 - RULE-SET,twitter_domain,💎 Twitter
 - RULE-SET,youtube_domain,📹 YouTube
