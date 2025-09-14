@@ -60,8 +60,9 @@ lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
   编辑 `/etc/sysctl.conf` 添加：
 
   ```
-  net.ipv4.ip_forward = 1
-  net.ipv6.conf.all.forwarding = 1
+  echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+  echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
+  sysctl -p
   ```
 
   并运行：
