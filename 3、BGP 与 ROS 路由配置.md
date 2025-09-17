@@ -23,19 +23,19 @@ router id 192.168.1.10;
 protocol device { scan time 60; }
 
 protocol kernel {
-  ipv4 { import none; export all; };
+  ipv4 { import none; export none; };
 }
 
 protocol static {
   ipv4;
-  include "routes4.conf";
+  include "/etc/routes4.conf";
 }
 
 protocol bgp {
   local as 65531;
   neighbor 192.168.1.1 as 65530;
   source address 192.168.1.10;
-  ipv4 { import none; export all; };
+  ipv4 { import none; export none; };
 }
 ```
 
