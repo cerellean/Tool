@@ -39,7 +39,7 @@ protocol kernel {
 # 静态路由：从 routes4.conf 读取国内 IP 段，只用于 BGP 输出
 protocol static static_routes {
   ipv4;
-  include "routes4.conf";
+  include "/etc/routes4.conf";
 }
 
 # BGP 协议：把静态路由通过 BGP 广播给 ROS，不接收 ROS 下发的路由
