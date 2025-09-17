@@ -3,7 +3,7 @@
 ```bash
 apk add bird
 rc-update add bird default
-service bird start
+rc-service bird start
 ```
 
 创建获取非本地 IP 的脚本 `/home/iplist.sh`（详见原文），设置定时任务：
@@ -17,26 +17,43 @@ crontab -e
 编辑 `/etc/bird.conf` 配置：
 
 ```conf
+# 记录日志
 log syslog all;
+
+# 路由器 ID (用你的本机内网 IP)
 router id 192.168.1.10;
 
-protocol device { scan time 60; }
+# 设备监控
+protocol device {
+  scan time 60;
+}
 
+# Kernel 协议：只做同步，不导入/导出路由，避免污染本机路由表
 protocol kernel {
-  ipv4 { import none; export none; };
+  ipv4 {
+    import none;
+    export none;
+  };
 }
 
-protocol static {
+# 静态路由：从 routes4.conf 读取国内 IP 段，只用于 BGP 输出
+protocol static static_routes {
   ipv4;
-  include "/etc/routes4.conf";
+  include "routes4.conf";
 }
 
-protocol bgp {
+# BGP 协议：把静态路由通过 BGP 广播给 ROS，不接收 ROS 下发的路由
+protocol bgp ros_peer {
   local as 65531;
   neighbor 192.168.1.1 as 65530;
   source address 192.168.1.10;
-  ipv4 { import none; export none; };
+
+  ipv4 {
+    import none;   # 不从 ROS 接收路由
+    export where source = RTS_STATIC;  # 只导出静态路由
+  };
 }
+
 ```
 
 ---
