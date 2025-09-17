@@ -71,5 +71,26 @@ lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
   sysctl -p
   rc-update add sysctl
   ```
+* 加载 TUN 模块：
+  添加tun支持：
 
+  ```
+  modprobe tun
+  ```
+
+  验证：
+
+  ```bash
+  lsmod | grep tun
+  ```
+  确认 `/dev/net/tun `存在：
+
+  ```bash
+  ls -l /dev/net/tun
+  ```
+  开机自动加载 TUN：
+
+  ```bash
+  echo tun >> /etc/modules
+  ```
 ---
