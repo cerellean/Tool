@@ -65,10 +65,10 @@
     使用你喜欢的文本编辑器（如 `vi` 或 `nano`）打开并创建文件：
     ```bash
     # 使用 nano 编辑器
-    sudo nano /etc/nftables.d/singbox.nft
+    nano /etc/nftables.d/singbox.nft
 
     # 或者使用 vi 编辑器
-    sudo vi /etc/nftables.d/singbox.nft
+    vi /etc/nftables.d/singbox.nft
     ```
 
 2.  **粘贴以下规则内容：**
