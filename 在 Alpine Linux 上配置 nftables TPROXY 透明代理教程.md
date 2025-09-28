@@ -105,7 +105,7 @@
     	chain prerouting_tproxy {
     		type filter hook prerouting priority mangle; policy accept;
     		meta l4proto { tcp, udp } th dport 53 tproxy to :7895 accept
-    		ip daddr { 10.0.0.0/8, 192.168.0.0/16 } accept
+    		ip daddr { 10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12  } accept
     		fib daddr type local meta l4proto { tcp, udp } th dport 7895 reject with icmpx host-unreachable
     		fib daddr type local accept
     		ip daddr @RESERVED_IPSET accept
@@ -119,7 +119,7 @@
     		meta mark 0x0000029a accept
     		meta l4proto { tcp, udp } th dport 53 meta mark set 0x00000001
     		udp dport { 137, 138, 139 } accept
-    		ip daddr { 10.0.0.0/8, 192.168.0.0/16 } accept
+    		ip daddr { 10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12  } accept
     		fib daddr type local accept
     		ip daddr @RESERVED_IPSET accept
     		meta l4proto { tcp, udp } meta mark set 0x00000001
