@@ -31,8 +31,8 @@ protocol device {
 # Kernel 协议：只做同步，不导入/导出路由，避免污染本机路由表
 protocol kernel {
   ipv4 {
-    import none;
-    export none;
+    import none;     # 不从 ROS 接收路由
+    export all;     # 导出路由
   };
 }
 
@@ -50,9 +50,10 @@ protocol bgp ros_peer {
 
   ipv4 {
     import none;   # 不从 ROS 接收路由
-    export where source = RTS_STATIC;  # 只导出静态路由
+    export all;  # 导出路由
   };
 }
+
 
 ```
 
