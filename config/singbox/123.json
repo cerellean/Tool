@@ -1,0 +1,189 @@
+{
+    "log": {
+        "disabled": false,
+        "level": "info",
+        "output": "/etc/sing-box/sing-box.log",
+        "timestamp": true
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "dns_direct",
+                "address": "https://120.53.53.53/dns-query",
+                "detour": "direct"
+            },
+            {
+                "tag": "dns_proxy",
+                "address": "https://dns.google/dns-query",
+                "address_resolver": "dns_direct",
+                "address_strategy": "ipv4_only",
+                "strategy": "ipv4_only",
+                "client_subnet": "1.0.1.0",
+                "detour": "proxy"
+            },
+            {
+                "tag": "dns_block",
+                "address": "rcode://refused"
+            },
+            {
+                "tag": "fakedns",
+                "address": "fakeip"
+            }
+        ],
+        "rules": [
+            {
+                "outbound": "any",
+                "server": "dns_direct"
+            },
+            {
+                "rule_set": "geosite-geolocation-cn",
+                "server": "dns_direct"
+            },
+            {
+                "rule_set": "geosite-geolocation-!cn",
+                "server": "fakedns",
+                "disable_cache": true
+            }
+        ],
+        "disable_cache": false,
+        "disable_expire": false,
+        "independent_cache": false,
+        "strategy": "prefer_ipv4",
+        "final": "dns_direct",
+        "fakeip": {
+            "enabled": true,
+            "inet4_range": "198.18.0.0/15",
+            "inet6_range": "fc00::/18"
+        }
+    },
+    "inbounds": [
+        {
+            "type": "direct",
+            "tag": "d-in",
+            "listen": "::",
+            "listen_port": 53,
+            "sniff": true,
+            "sniff_timeout": "300ms",
+            "sniff_override_destination": false
+        },
+        {
+            "type": "socks",
+            "tag": "socks-in",
+            "listen": "::",
+            "listen_port": 5353,
+            "tcp_fast_open": false,
+            "tcp_multi_path": false,
+            "udp_fragment": false,
+            "udp_timeout": "5m"
+        },
+        {
+            "type": "tun",
+            "tag": "tun-in",
+            "interface_name": "tun0",
+            "address": [
+                "172.19.0.1/30",
+                "fdfe:dcba:9876::1/126"
+            ],
+            "auto_route": true,
+            "strict_route": true,
+            "stack": "system",
+            "mtu": 9000,
+            "sniff": true
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "hysteria2",
+            "tag": "proxy",
+            "server": "换成自己vps的ip",
+            "server_port": 443,
+            "up_mbps": 100,
+            "down_mbps": 2000,
+            "password": "123456",
+            "tls": {
+                "enabled": true,
+                "server_name": "https://cn.bing.com",
+                "insecure": true
+            }
+        },
+        {
+            "type": "direct",
+            "tag": "direct"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        },
+        {
+            "type": "dns",
+            "tag": "dns-out"
+        }
+    ],
+    "route": {
+        "rules": [
+            {
+                "inbound": "d-in",
+                "outbound": "dns-out"
+            },
+            {
+                "protocol": "quic",
+                "outbound": "block"
+            },
+            {
+                "ip_is_private": true,
+                "outbound": "direct"
+            },
+            {
+                "rule_set": [
+                    "geosite-geolocation-cn",
+                    "geoip-cn"
+                ],
+                "outbound": "direct"
+            },
+            {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "rule_set": "geosite-geolocation-!cn"
+                    },
+                    {
+                        "rule_set": "geoip-cn",
+                        "invert": true
+                    }
+                ],
+                "outbound": "proxy"
+            }
+        ],
+        "rule_set": [
+            {
+                "type": "remote",
+                "tag": "geosite-geolocation-cn",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-cn.srs",
+                "download_detour": "proxy"
+            },
+            {
+                "type": "remote",
+                "tag": "geosite-geolocation-!cn",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-!cn.srs",
+                "download_detour": "proxy"
+            },
+            {
+                "type": "remote",
+                "tag": "geoip-cn",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+                "download_detour": "proxy"
+            }
+        ],
+        "final": "proxy",
+        "auto_detect_interface": true
+    },
+    "experimental": {
+        "cache_file": {
+            "enabled": true
+        }
+    }
+}
