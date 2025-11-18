@@ -62,6 +62,9 @@ protocol bgp ros_peer {
 ### 2. RouterOS 设置（ROS）：
 
 * 创建路由表 `bypass`，启用 `fib`
+  ```bash
+  /routing table add disabled=no fib name=bypass
+  ```
 
 * 添加默认路由：
 
@@ -72,11 +75,8 @@ protocol bgp ros_peer {
 * 配置 BGP：
 
   ```bash
-  /routing bgp instance
-add as=65530 name=bgp-instance-1 router-id=192.168.1.1
-/routing bgp connection
-add instance=bgp-instance-1 local.role=ebgp multihop=yes name=clash \
-    remote.address=192.168.1.10 .as=65531 routing-table=bypass
+  /routing bgp instance add as=65530 name=bgp-instance-1 router-id=192.168.1.1
+  /routing bgp connection add instance=bgp-instance-1 local.role=ebgp multihop=yes name=clash remote.address=192.168.1.10 .as=65531 routing-table=bypass
   ```
 
 * 防火墙规则：
