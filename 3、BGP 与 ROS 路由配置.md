@@ -72,7 +72,11 @@ protocol bgp ros_peer {
 * 配置 BGP：
 
   ```bash
-  /routing/bgp/connection add name=clash local.role=ebgp remote.address=192.168.1.10 .as=65531 routing-table=bypass router-id=192.168.1.1 as=65530 multihop=yes
+  /routing bgp instance
+add as=65530 name=bgp-instance-1 router-id=192.168.1.1
+/routing bgp connection
+add instance=bgp-instance-1 local.role=ebgp multihop=yes name=clash \
+    remote.address=192.168.1.10 .as=65531 routing-table=bypass
   ```
 
 * 防火墙规则：
