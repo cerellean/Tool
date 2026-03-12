@@ -63,5 +63,5 @@ add action=lookup disabled=no dst-address=91.108.20.0/22 table=sing-box-v4
 add action=lookup disabled=no dst-address=91.105.192.0/23 table=sing-box-v4
 add action=lookup disabled=no dst-address=95.161.64.0/20 table=sing-box-v4
 add action=lookup disabled=no dst-address=185.76.151.0/24 table=sing-box-v4
-```sh
+```
 ###  4、局域网客户端DNS设置成MOSDNS的IP即可分流
