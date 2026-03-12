@@ -1,0 +1,61 @@
+###通过在/routing rules 中添加路由规则的方式将fakeip及TG IP、奈菲IP等路由至sing-box。（博主目前在用此法）
+
+1、添加sing-box-v4、sing-box-v6路由表
+/routing table add name=sing-box-v4 fib
+/routing table add name=sing-box-v6 fib
+2、设置路由表sing-box-v4、sing-box-v6的下一跳网关为sing-box
+/ip route add dst-address=0.0.0.0/0 gateway=10.0.0.2 routing-table=sing-box-v4
+/ipv6 route add dst-address=::/0 gateway=dc00::2222 routing-table=sing-box-v6
+3、设置FakeIP、TG IP等IP的路由规则
+
+/routing rule
+add action=lookup disabled=no dst-address=f2b0::/18 table=sing-box-v6
+add action=lookup disabled=no dst-address=2001:b28:f23d::/48 table=sing-box-v6
+add action=lookup disabled=no dst-address=2001:b28:f23f::/48 table=sing-box-v6
+add action=lookup disabled=no dst-address=2001:67c:4e8::/48 table=sing-box-v6
+add action=lookup disabled=no dst-address=2001:b28:f23c::/48 table=sing-box-v6
+add action=lookup disabled=no dst-address=2a0a:f280::/32 table=sing-box-v6
+add action=lookup disabled=no dst-address=1.1.1.1/32 table=sing-box-v4
+add action=lookup disabled=no dst-address=1.0.0.1/32 table=sing-box-v4
+add action=lookup disabled=no dst-address=8.8.8.8/32 table=sing-box-v4
+add action=lookup disabled=no dst-address=8.8.4.4/32 table=sing-box-v4
+add action=lookup disabled=no dst-address=8.41.4.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=45.12.89.152/32 table=sing-box-v4
+add action=lookup disabled=no dst-address=104.19.192.175/32 table=sing-box-v4
+add action=lookup disabled=no dst-address=23.23.189.144/28 table=sing-box-v4
+add action=lookup disabled=no dst-address=23.246.0.0/18 table=sing-box-v4
+add action=lookup disabled=no dst-address=34.195.253.0/25 table=sing-box-v4
+add action=lookup disabled=no dst-address=37.77.184.0/21 table=sing-box-v4
+add action=lookup disabled=no dst-address=38.72.126.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=45.57.0.0/17 table=sing-box-v4
+add action=lookup disabled=no dst-address=52.24.178.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=52.35.140.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=54.204.25.0/28 table=sing-box-v4
+add action=lookup disabled=no dst-address=54.213.167.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=64.120.128.0/17 table=sing-box-v4
+add action=lookup disabled=no dst-address=66.197.128.0/17 table=sing-box-v4
+add action=lookup disabled=no dst-address=69.53.224.0/19 table=sing-box-v4
+add action=lookup disabled=no dst-address=103.87.204.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=108.175.32.0/20 table=sing-box-v4
+add action=lookup disabled=no dst-address=185.2.220.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=185.9.188.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=192.173.64.0/18 table=sing-box-v4
+add action=lookup disabled=no dst-address=198.38.96.0/19 table=sing-box-v4
+add action=lookup disabled=no dst-address=198.45.48.0/20 table=sing-box-v4
+add action=lookup disabled=no dst-address=203.75.84.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=203.198.13.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=203.198.80.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=207.45.72.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=208.75.76.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=210.0.153.0/24 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.108.56.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.108.4.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.108.8.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.108.16.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.108.12.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=149.154.160.0/20 table=sing-box-v4
+add action=lookup disabled=no dst-address=28.0.0.0/8 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.108.20.0/22 table=sing-box-v4
+add action=lookup disabled=no dst-address=91.105.192.0/23 table=sing-box-v4
+add action=lookup disabled=no dst-address=95.161.64.0/20 table=sing-box-v4
+add action=lookup disabled=no dst-address=185.76.151.0/24 table=sing-box-v4
