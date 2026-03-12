@@ -1,16 +1,16 @@
-##通过在/routing rules 中添加路由规则的方式将fakeip及TG IP、奈菲IP等路由至sing-box。（博主目前在用此法）
+##  通过在/routing rules 中添加路由规则的方式将fakeip及TG IP、奈菲IP等路由至sing-box。（博主目前在用此法）
 
-###1、添加sing-box-v4、sing-box-v6路由表
+###  1、添加sing-box-v4、sing-box-v6路由表
 ```sh
 /routing table add name=sing-box-v4 fib
 /routing table add name=sing-box-v6 fib
 ```
-###2、设置路由表sing-box-v4、sing-box-v6的下一跳网关为sing-box
+###  2、设置路由表sing-box-v4、sing-box-v6的下一跳网关为sing-box
 ```sh
 /ip route add dst-address=0.0.0.0/0 gateway=10.0.0.2 routing-table=sing-box-v4
 /ipv6 route add dst-address=::/0 gateway=dc00::2222 routing-table=sing-box-v6
 ```
-###3、设置FakeIP、TG IP等IP的路由规则
+###  3、设置FakeIP、TG IP等IP的路由规则
 ```sh
 /routing rule
 add action=lookup disabled=no dst-address=f2b0::/18 table=sing-box-v6
@@ -64,4 +64,4 @@ add action=lookup disabled=no dst-address=91.105.192.0/23 table=sing-box-v4
 add action=lookup disabled=no dst-address=95.161.64.0/20 table=sing-box-v4
 add action=lookup disabled=no dst-address=185.76.151.0/24 table=sing-box-v4
 ```sh
-###4、局域网客户端DNS设置成MOSDNS的IP即可分流
+###  4、局域网客户端DNS设置成MOSDNS的IP即可分流
