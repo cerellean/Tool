@@ -1,4 +1,4 @@
-##  通过在/routing rules 中添加路由规则的方式将fakeip及TG IP、奈菲IP等路由至sing-box。（博主目前在用此法）
+##  通过在/routing rules 中添加路由规则的方式将fakeip及TG IP、奈菲IP等路由至sing-box。（tom老师在用）
 
 ###  默认sing-box的ipv4为10.0.0.2，ipv6为dc00::2222，Fake v4网段为28.0.0.0/8，Fake v6网段为f2b0::/18。
 特别注意：ros开启fasttrack，mangle会失效，只能采取route的方式路由fakeip
