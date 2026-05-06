@@ -95,14 +95,14 @@
         {
             "type": "remote",
             "tag": "FLAREIX",
-            "url": "https://sub-668.flareix.us/api/node/subscription/c14ba802-9c77-48e7-9ae1-6013f670ed2a/clash",
+            "url": "",
             "update_interval": "24000h",
             "download_detour": "direct"
         },
         {
             "type": "remote",
             "tag": "备用",
-            "url": "https://apple-bing.sbs/s/3680c9c61191703cd6450b75a2560260?burn=UUkCRBq9HUsHk6WG",
+            "url": "",
             "update_interval": "24000h",
             "download_detour": "direct"
         }
