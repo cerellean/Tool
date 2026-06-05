@@ -5,7 +5,7 @@ apk add wget
 cd /opt
 mkdir -p alist && cd alist
 
-wget https://github.com/alist-org/alist/releases/download/v3.11.0/alist-linux-musl-amd64.tar.gz
+wget https://github.com/alist-org/alist/releases/download/v3.40.0/alist-linux-musl-amd64.tar.gz
 tar -zxvf alist-*.tar.gz && rm alist-*.tar.gz
 chmod +x alist
 cd /alist
